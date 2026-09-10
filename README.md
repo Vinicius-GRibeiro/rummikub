@@ -9,7 +9,7 @@ O projeto foi concebido para ser desacoplado da interface: a lógica de regras e
 ## 🚀 Destaques de Arquitetura
 
 - **Domínio Isolado (`core`):** As entidades de jogo (`Tile`, `TileBag`, `Meld`, `Board`, `Player`) não possuem dependências de terminal ou bibliotecas gráficas (sem `print()` ou `input()` no domínio).
-- **Testes Automatizados:** Suíte de testes com `pytest` cobrindo cenários felizes, casos de borda e tratamento de exceções.
+- **Testes Automatizados:** Suíte de testes com `pytest` cobrindo cenários felizes, edge cases e tratamento de exceções.
 
 ---
 
@@ -24,7 +24,6 @@ Rummikub/
 │           ├── cli/    # Interface de Terminal (Renderização ANSI e controles)
 │           └── gui/    # Futura Interface Gráfica (Pygame / Arcade)
 ├── tests/              # Testes unitários com pytest
-├── ARCHITECTURE.md     # Detalhamento arquitetural de cada módulo
 ├── pytest.ini          # Configuração da suíte de testes
 └── requirements.txt    # Dependências do projeto
 ```
