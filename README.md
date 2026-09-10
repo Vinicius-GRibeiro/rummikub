@@ -35,7 +35,7 @@ Rummikub/
 - [x] **Peça (`Tile`):** Cores com `Enum`, Coringa, validação de limites (1 a 13) e imutabilidade.
 - [x] **Monte de Peças (`TileBag`):** 106 peças oficiais, compra individual, compra em lote e embaralhamento.
 - [x] **Suíte de Testes Inicial:** 18 testes automatizados cobrindo peças e monte de compra.
-- [ ] **Jogador & Suporte (`Player` / `Rack`):** Gerenciamento da mão, contagem de pontos e ordenação por cor e número.
+- [x] **Jogador & Suporte (`Player` / `Rack`):** Gerenciamento da mão, contagem de pontos e ordenação por cor e número.
 - [ ] **Validação de Combinações (`Meld`):** Regras de Grupos (*Sets*), Sequências (*Runs*) e Coringas.
 - [ ] **Mesa & Transações (`Board`):** Manipulação de peças com suporte a *snapshot* e *rollback*.
 - [ ] **Mecânica de Jogo (`Game`):** Regra dos 30 pontos na saída inicial e ciclo de turnos.
