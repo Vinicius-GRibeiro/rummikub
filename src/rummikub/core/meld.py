@@ -67,19 +67,39 @@ class Run(Meld):
         if len(set(regular_tiles)) != len(regular_tiles): # Números repetidos
             return False
 
-        joker_tiles = [j for j in self.tiles if j.is_joker]
+        anchor_tile = regular_tiles[0]
+        anchor_index = self.tiles.index(anchor_tile)
 
-        regular_tiles.sort(key=lambda tile: (tile.value, tile.color.value))
-        missing_values = 0
+        expected_sequence_first_value = anchor_tile.value - anchor_index
+        expected_sequence_last_value = expected_sequence_first_value + (len(self.tiles) - 1)
 
-        for index, tile in enumerate(regular_tiles):
-            if index == len(regular_tiles) - 1: break
-            missing_values += (regular_tiles[index+1].value - tile.value - 1)
-
-        if missing_values > len(joker_tiles):
+        if expected_sequence_first_value < 1 or expected_sequence_last_value > 13:
             return False
 
+        for index, tile in enumerate(self.tiles):
+            expected_value = expected_sequence_first_value + index
+
+            if tile.is_joker:
+                continue
+
+            if tile.value != expected_value:
+                return False
+
         return True
+
+        # joker_tiles = [j for j in self.tiles if j.is_joker]
+
+        # regular_tiles.sort(key=lambda tile: (tile.value, tile.color.value))
+        # missing_values = 0
+        #
+        # for index, tile in enumerate(regular_tiles):
+        #     if index == len(regular_tiles) - 1: break
+        #     missing_values += (regular_tiles[index+1].value - tile.value - 1)
+        #
+        # if missing_values > len(joker_tiles):
+        #     return False
+
+        # return True
 
 
     @property
