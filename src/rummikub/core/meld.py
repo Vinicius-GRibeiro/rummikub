@@ -53,32 +53,41 @@ class Run(Meld):
     def __init__(self, tiles: list[Tile] | None = None):
         super().__init__(tiles)
 
-    def is_valid(self) -> bool:
-        if not(3 <= len(self.tiles) <= 13): # Tamanho
-            return False
+    def _get_regular_tiles(self):
+        return [t for t in self.tiles if not t.is_joker]
 
-        regular_tiles = [t for t in self.tiles if not t.is_joker]
-        if len(regular_tiles) == 0: # Somente coringas
-            return False
-        
-        if len(set([t.color for t in regular_tiles])) > 1: # Cor única
-            return False
-
-        if len(set(regular_tiles)) != len(regular_tiles): # Números repetidos
-            return False
-
+    def _get_sequence_context(self):
+        regular_tiles = self._get_regular_tiles()
         anchor_tile = regular_tiles[0]
         anchor_index = self.tiles.index(anchor_tile)
 
         expected_sequence_first_value = anchor_tile.value - anchor_index
         expected_sequence_last_value = expected_sequence_first_value + (len(self.tiles) - 1)
 
+        return (expected_sequence_first_value, expected_sequence_last_value)
+
+    def is_valid(self) -> bool:
+        if not(3 <= len(self.tiles) <= 13): # Tamanho
+            return False
+
+        regular_tiles = self._get_regular_tiles()
+
+        if len(regular_tiles) == 0: # Somente coringas
+            return False
+
+        if len(set([t.color for t in regular_tiles])) > 1: # Cor única
+            return False
+
+        if len(set(regular_tiles)) != len(regular_tiles): # Números repetidos
+            return False
+
+        expected_sequence_first_value, expected_sequence_last_value = self._get_sequence_context()
+
         if expected_sequence_first_value < 1 or expected_sequence_last_value > 13:
             return False
 
         for index, tile in enumerate(self.tiles):
             expected_value = expected_sequence_first_value + index
-
             if tile.is_joker:
                 continue
 
@@ -87,21 +96,11 @@ class Run(Meld):
 
         return True
 
-        # joker_tiles = [j for j in self.tiles if j.is_joker]
-
-        # regular_tiles.sort(key=lambda tile: (tile.value, tile.color.value))
-        # missing_values = 0
-        #
-        # for index, tile in enumerate(regular_tiles):
-        #     if index == len(regular_tiles) - 1: break
-        #     missing_values += (regular_tiles[index+1].value - tile.value - 1)
-        #
-        # if missing_values > len(joker_tiles):
-        #     return False
-
-        # return True
-
-
     @property
     def points(self):
-        pass
+        if not self.is_valid():
+            return 0
+
+        expected_sequence_first_value, expected_sequence_last_value = self._get_sequence_context()
+
+        return sum(range(expected_sequence_first_value, expected_sequence_last_value+1))
