@@ -1,4 +1,4 @@
-from .tile import Tile
+from .tile import Tile, Color
 from abc import ABC, abstractmethod
 
 class Meld(ABC):
@@ -49,4 +49,39 @@ class Group(Meld):
 
         return True
 
+class Run(Meld):
+    def __init__(self, tiles: list[Tile] | None = None):
+        super().__init__(tiles)
 
+    def is_valid(self) -> bool:
+        if not(3 <= len(self.tiles) <= 13): # Tamanho
+            return False
+
+        regular_tiles = [t for t in self.tiles if not t.is_joker]
+        if len(regular_tiles) == 0: # Somente coringas
+            return False
+        
+        if len(set([t.color for t in regular_tiles])) > 1: # Cor única
+            return False
+
+        if len(set(regular_tiles)) != len(regular_tiles): # Números repetidos
+            return False
+
+        joker_tiles = [j for j in self.tiles if j.is_joker]
+
+        regular_tiles.sort(key=lambda tile: (tile.value, tile.color.value))
+        missing_values = 0
+
+        for index, tile in enumerate(regular_tiles):
+            if index == len(regular_tiles) - 1: break
+            missing_values += (regular_tiles[index+1].value - tile.value - 1)
+
+        if missing_values > len(joker_tiles):
+            return False
+
+        return True
+
+
+    @property
+    def points(self):
+        pass
