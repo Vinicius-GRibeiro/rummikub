@@ -1,5 +1,4 @@
 import copy
-
 from .meld import Meld
 
 class Board:
